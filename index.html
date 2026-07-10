@@ -178,25 +178,49 @@ header.nav.scrolled .nav-in{height:62px}
 .scroll-cue .arr{font-size:18px;animation:bob 1.8s ease-in-out infinite}
 @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
 
-/* ---------- MARQUEE signature ---------- */
-.marq{background:var(--ambre);color:var(--noir);overflow:hidden;border-top:1px solid var(--noir);border-bottom:1px solid var(--noir)}
+/* ---------- TAPES diagonales (signature) ---------- */
+.tapes{position:relative;z-index:7;margin:-30px 0 -44px;pointer-events:none}
+.tapes .marq{width:106vw;margin-left:-3vw}
+.tapes .t1{transform:rotate(-1.9deg)}
+.tapes .t2{transform:rotate(1.5deg);margin-top:-50px;background:var(--slate);border-color:var(--noir);box-shadow:0 16px 34px -22px rgba(0,0,0,.55)}
+.marq{background:var(--ambre);color:var(--noir);overflow:hidden;border-top:1.5px solid var(--noir);border-bottom:1.5px solid var(--noir)}
 .marq-track{display:flex;white-space:nowrap;animation:slide 30s linear infinite;will-change:transform}
 .marq:hover .marq-track,.brass:hover .brass-track{animation-play-state:paused}
 .marq-track span{font-family:var(--f-display);font-weight:900;font-size:30px;padding:16px 30px;display:inline-flex;align-items:center;gap:30px;letter-spacing:-.01em}
 .marq-track span:nth-child(even){color:transparent;-webkit-text-stroke:1.2px var(--noir)}
 .marq-track span::after{content:"✶";font-size:15px;color:var(--noir);-webkit-text-stroke:0}
+.t2 .marq-track{animation:slide 38s linear infinite reverse;font-size:0}
+.t2 .marq-track span{color:var(--craie);font-size:22px;padding:12px 24px}
+.t2 .marq-track span:nth-child(even){color:transparent;-webkit-text-stroke:1px var(--craie)}
+.t2 .marq-track span::after{color:var(--ambre-light)}
 @keyframes slide{to{transform:translateX(-50%)}}
 
-/* ---------- STATEMENT (baseline géante) ---------- */
-.statement{background:var(--craie);padding:130px 0 118px;position:relative;overflow:hidden}
-.statement .eyebrow{display:block;text-align:center;margin-bottom:26px}
-.st-title{font-family:var(--f-display);font-weight:900;font-size:clamp(40px,8.2vw,118px);line-height:1;letter-spacing:-.03em;text-align:center;color:var(--noir)}
-.st-title .tchalk{font-family:var(--f-chalk);font-weight:700;color:var(--ambre);font-size:1.08em;letter-spacing:0}
-.st-title em{font-style:italic;font-weight:500}
-.st-foot{display:flex;align-items:center;justify-content:center;gap:18px;margin-top:44px;opacity:0;transform:translateY(14px);transition:opacity .8s var(--ease-out) .5s,transform .8s var(--ease-out) .5s}
+/* ---------- BTN-LINE (rangée bordée + cellule flèche) ---------- */
+.btn-line{display:flex;align-items:stretch;border:1.5px solid rgba(242,237,225,.35);border-radius:6px;overflow:hidden;font-family:var(--f-display);font-weight:900;text-transform:uppercase;letter-spacing:.02em;transition:background .35s var(--ease-out),border-color .35s var(--ease-out),color .35s var(--ease-out)}
+.btn-line .bl-txt{flex:1;padding:20px 26px;font-size:clamp(15px,1.9vw,23px);line-height:1.2}
+.btn-line .bl-cell{display:grid;place-items:center;width:88px;border-left:1.5px solid rgba(242,237,225,.35);font-size:26px;transition:border-color .35s var(--ease-out)}
+.btn-line .ar{display:inline-block;transition:transform .35s var(--ease-out)}
+.btn-line:hover{background:var(--ambre);border-color:var(--ambre);color:var(--noir)}
+.btn-line:hover .bl-cell{border-left-color:rgba(22,21,15,.3)}
+.btn-line:hover .ar{transform:translateX(7px)}
+.btn-line--dark{border-color:rgba(22,21,15,.4);color:var(--noir)}
+.btn-line--dark .bl-cell{border-left-color:rgba(22,21,15,.4)}
+.btn-line--dark:hover{background:var(--noir);border-color:var(--noir);color:var(--craie)}
+.btn-line--dark:hover .bl-cell{border-left-color:rgba(242,237,225,.25)}
+
+/* ---------- STATEMENT (baseline géante, éditorial asymétrique) ---------- */
+.statement{background:var(--craie);padding:150px 0 120px;position:relative;overflow:hidden}
+.st-head{display:flex;align-items:flex-end;justify-content:space-between;gap:44px;margin-bottom:40px}
+.st-side{max-width:34ch;font-size:15px;line-height:1.65;color:#5a564a;text-align:right}
+.st-side b{color:var(--noir)}
+.st-title{font-family:var(--f-display);font-weight:900;font-size:clamp(46px,8.8vw,142px);line-height:.98;letter-spacing:-.035em;color:var(--noir)}
+.st-title .tchalk{font-family:var(--f-chalk);font-weight:700;color:var(--ambre);font-size:1.06em;letter-spacing:0}
+.st-title .t-line:nth-child(2) i{padding-left:.9em}
+.st-foot{display:flex;align-items:center;gap:18px;margin-top:46px;opacity:0;transform:translateY(14px);transition:opacity .8s var(--ease-out) .5s,transform .8s var(--ease-out) .5s}
 .reveal.in .st-foot{opacity:1;transform:none}
 .st-foot .rule{width:64px;height:1.5px;background:rgba(22,21,15,.3)}
 .st-foot span{font-size:12px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:#8a8578}
+.st-hatch{position:absolute;right:6%;bottom:150px;width:150px;height:96px;background:repeating-linear-gradient(0deg,var(--ambre) 0 3px,transparent 3px 10px);opacity:.7;pointer-events:none}
 
 /* ---------- BANDE PHOTO (parallax translation) ---------- */
 .band{position:relative;height:clamp(380px,68vh,640px);overflow:hidden;background:var(--slate)}
@@ -292,6 +316,9 @@ header.nav.scrolled .nav-in{height:62px}
 
 /* ---------- CARTE (ardoise) — signature ---------- */
 .carte{background:var(--slate);color:var(--craie);padding:110px 0 30px;position:relative}
+.carte h2.title{font-size:clamp(42px,6.8vw,92px)}
+.carte-head{display:flex;align-items:flex-end;justify-content:space-between;gap:40px;margin-bottom:8px}
+.carte-head .cnum{font-family:var(--f-chalk);font-weight:700;font-size:clamp(20px,2.2vw,27px);color:var(--ambre-light);white-space:nowrap;padding-bottom:14px}
 .carte::before{content:"";position:absolute;inset:0;opacity:.05;background-image:radial-gradient(rgba(242,237,225,.6) 1px,transparent 1px);background-size:5px 5px;pointer-events:none}
 .carte .wrap{position:relative}
 .carte h2.title{color:var(--craie)}
@@ -323,14 +350,20 @@ header.nav.scrolled .nav-in{height:62px}
 .carte-note{margin-top:22px;font-size:13px;color:var(--craie-soft);opacity:.75}
 
 /* ---------- BRASSEURS ---------- */
-.brass{background:var(--slate);padding:38px 0;overflow:hidden;position:relative}
+.brass{background:var(--slate);padding:54px 0 70px;overflow:hidden;position:relative}
 .brass::before{content:"";position:absolute;inset:0;opacity:.05;background-image:radial-gradient(rgba(242,237,225,.6) 1px,transparent 1px);background-size:5px 5px;pointer-events:none}
 .brass .wrap{position:relative}
 .brass .eyebrow{color:var(--ambre-light)}
 .brass h2.title{color:var(--craie);font-size:clamp(24px,3.2vw,34px);margin:.1em 0 .3em}
-.brass-track{display:flex;white-space:nowrap;animation:slide 34s linear infinite;margin-top:12px;will-change:transform;position:relative}
-.brass-track span{font-family:var(--f-display);font-weight:900;font-size:22px;color:var(--craie);padding:4px 20px;display:inline-flex;align-items:center;gap:20px;opacity:.92}
-.brass-track span::after{content:"•";color:var(--ambre);font-size:14px}
+.brass-track{display:flex;white-space:nowrap;animation:slide 34s linear infinite;margin-top:16px;will-change:transform;position:relative}
+.brass-track span{font-family:var(--f-display);font-weight:900;font-size:clamp(26px,3.4vw,44px);color:var(--craie);padding:4px 26px;display:inline-flex;align-items:center;gap:26px;letter-spacing:-.01em}
+.brass-track span:nth-child(even){color:transparent;-webkit-text-stroke:1.2px rgba(242,237,225,.8)}
+.brass-track span::after{content:"•";color:var(--ambre);font-size:15px;-webkit-text-stroke:0}
+.brass-track.rev{animation:slide 42s linear infinite reverse;margin-top:4px}
+.brass-track.rev span{font-size:clamp(20px,2.4vw,30px);color:transparent;-webkit-text-stroke:1px rgba(224,168,92,.65)}
+.brass-track.rev span:nth-child(even){color:var(--ambre-light);-webkit-text-stroke:0}
+.brass-head{display:flex;align-items:flex-end;justify-content:space-between;gap:30px}
+.brass-head .bh-note{font-size:13px;color:var(--craie-soft);max-width:30ch;text-align:right;padding-bottom:8px}
 
 /* ---------- AVIS ---------- */
 .avis{padding:108px 0 82px}
@@ -381,12 +414,12 @@ header.nav.scrolled .nav-in{height:62px}
 /* ---------- FOOTER ---------- */
 footer{background:var(--noir);color:var(--craie-soft)}
 .foot-cta{background:var(--craie);color:var(--noir)}
-.foot-cta-in{display:flex;align-items:flex-end;justify-content:space-between;gap:28px;padding:64px 26px 84px;flex-wrap:wrap}
+.foot-cta-in{padding:78px 26px 88px}
 .foot-cta .chalk{font-size:clamp(24px,2.6vw,32px);line-height:1;color:var(--ambre)}
-.foot-cta h3{font-family:var(--f-display);font-weight:900;font-size:clamp(32px,5.6vw,72px);letter-spacing:-.025em;line-height:1;margin-top:8px;color:var(--noir)}
-.foot-cta .btn-amber{background:var(--noir);color:var(--craie)}
-.foot-cta .btn-amber::before{background:var(--ambre)}
-.foot-cta .btn-amber:hover{color:var(--noir)}
+.foot-cta h3{font-family:var(--f-display);font-weight:900;font-size:clamp(38px,6.8vw,96px);letter-spacing:-.03em;line-height:.98;margin-top:10px;color:var(--noir)}
+.fc-tags{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:20px;font-size:12.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--ambre)}
+.fc-tags span{white-space:nowrap}
+.foot-cta .btn-line{margin-top:42px}
 .foot-body{position:relative;overflow:hidden;padding:60px 0 26px}
 .foot-ghost{position:absolute;right:-10px;bottom:-42px;font-family:var(--f-display);font-weight:900;font-size:clamp(120px,20vw,240px);line-height:.8;color:var(--craie);opacity:.04;pointer-events:none;letter-spacing:-.03em}
 .foot-cols{position:relative;display:grid;grid-template-columns:1.6fr 1fr 1fr 1.1fr;gap:34px}
@@ -420,6 +453,12 @@ footer{background:var(--noir);color:var(--craie-soft)}
 .bdot{width:15px;height:15px;border-radius:50%;flex-shrink:0;border:1px solid rgba(242,237,225,.35);box-shadow:0 0 0 3px rgba(242,237,225,.05)}
 .btxt small{display:block;font-family:var(--f-text);font-weight:400;font-size:12.5px;letter-spacing:.04em;color:var(--craie-soft);text-transform:uppercase;margin-top:3px}
 .bdeg{font-family:var(--f-text);font-size:10.5px;font-weight:700;letter-spacing:.05em;color:var(--noir);background:var(--ambre-light);padding:2px 8px;border-radius:20px;margin-left:10px;white-space:nowrap}
+
+/* ---------- TAPE DIAGONALE inter-sections ---------- */
+.tape-diag{position:relative;z-index:6;height:0;overflow:visible;pointer-events:none}
+.tape-diag .tape-inner{position:absolute;left:-4vw;right:-4vw;top:-30px;transform:rotate(-2.2deg);background:var(--craie);border-top:1.5px solid var(--noir);border-bottom:1.5px solid var(--noir);box-shadow:0 14px 30px -18px rgba(0,0,0,.45);overflow:hidden}
+.tape-diag .marq-track span{font-size:20px;padding:11px 22px;gap:22px}
+.tape-diag .marq-track span:nth-child(even){-webkit-text-stroke-width:1px}
 
 /* ---------- POLAROIDS ---------- */
 .polas{background:var(--kraft);padding:96px 0;overflow:hidden;position:relative}
@@ -478,13 +517,29 @@ footer{background:var(--noir);color:var(--craie-soft)}
   .hero-cta .btn{flex:1 1 100%}
 
   .marq-track span{font-size:20px;padding:11px 18px;gap:18px}
-  .statement{padding:80px 0 70px}
-  .st-title{font-size:clamp(34px,10.5vw,54px)}
+  .tapes{margin:-22px 0 -34px}
+  .tapes .t2{margin-top:-38px}
+  .t2 .marq-track span{font-size:16px;padding:9px 16px}
+  .statement{padding:110px 0 76px}
+  .st-head{flex-direction:column;align-items:flex-start;gap:16px;margin-bottom:26px}
+  .st-side{text-align:left;font-size:14px}
+  .st-title{font-size:clamp(40px,12vw,60px)}
+  .st-title .t-line:nth-child(2) i{padding-left:.45em}
+  .st-hatch{display:none}
   .st-foot{margin-top:28px;gap:12px}
   .st-foot .rule{width:34px}
   .st-foot span{font-size:10px;letter-spacing:.18em}
   .band{height:340px}
   .band-inner .chalk{font-size:26px}
+  .carte-head{flex-direction:column;align-items:flex-start;gap:2px}
+  .carte-head .cnum{padding-bottom:6px}
+  .carte h2.title{font-size:clamp(36px,10vw,48px)}
+  .brass-head{flex-direction:column;align-items:flex-start;gap:8px}
+  .brass-head .bh-note{text-align:left;padding-bottom:0}
+  .btn-line .bl-txt{padding:16px 18px;font-size:15px}
+  .btn-line .bl-cell{width:60px;font-size:21px}
+  .tape-diag .marq-track span{font-size:15px;padding:9px 14px;gap:14px}
+  .tape-diag .tape-inner{top:-24px}
   .concept{padding:60px 0}
   .maison-grid{grid-template-columns:1fr;gap:44px;margin:36px 0 52px}
   .maison-photos{padding:10px 6px 34px 6px}
@@ -508,7 +563,8 @@ footer{background:var(--noir);color:var(--craie-soft)}
   .grev{flex-direction:column;align-items:flex-start;gap:12px}
   .grev .gbtn{margin-left:0}
   .pola{width:150px}
-  .foot-cta-in{flex-direction:column;align-items:flex-start;padding:44px 26px 54px;gap:22px}
+  .foot-cta-in{padding:54px 26px 60px}
+  .fc-tags{font-size:11px;gap:6px 12px}
   .foot-cols{grid-template-columns:1fr 1fr;gap:28px}
   .fcol-brand{grid-column:1/-1}
   .foot-ghost{font-size:120px;bottom:-24px}
@@ -590,23 +646,36 @@ footer{background:var(--noir);color:var(--craie-soft)}
   <a href="#carte" class="scroll-cue" aria-label="Défiler vers la carte"><span>Découvrir</span><span class="arr">↓</span></a>
 </section>
 
-<!-- ============ MARQUEE ============ -->
-<div class="marq" aria-hidden="true">
-  <div class="marq-track">
-    <span>Bières artisanales</span><span>100 % locales</span><span>Sur place ou à emporter</span><span>Hoppy Days mardi &amp; mercredi</span>
-    <span>Bières artisanales</span><span>100 % locales</span><span>Sur place ou à emporter</span><span>Hoppy Days mardi &amp; mercredi</span>
+<!-- ============ TAPES DIAGONALES ============ -->
+<div class="tapes" aria-hidden="true">
+  <div class="marq t1">
+    <div class="marq-track">
+      <span>Bières artisanales</span><span>100 % locales</span><span>Sur place ou à emporter</span><span>Hoppy Days mardi &amp; mercredi</span>
+      <span>Bières artisanales</span><span>100 % locales</span><span>Sur place ou à emporter</span><span>Hoppy Days mardi &amp; mercredi</span>
+    </div>
+  </div>
+  <div class="marq t2">
+    <div class="marq-track">
+      <span>Le 100 P'</span><span>Club des amateurs</span><span>rue de l'Échelle</span><span>Nantes</span><span>depuis 2020</span>
+      <span>Le 100 P'</span><span>Club des amateurs</span><span>rue de l'Échelle</span><span>Nantes</span><span>depuis 2020</span>
+    </div>
   </div>
 </div>
 
 <!-- ============ STATEMENT ============ -->
 <section class="statement">
+  <span class="st-hatch" aria-hidden="true"></span>
   <div class="wrap reveal">
-    <span class="eyebrow">Le club des amateurs</span>
+    <div class="st-head">
+      <span class="eyebrow">Le club des amateurs</span>
+      <p class="st-side"><b>Microbrasseries de Loire-Atlantique</b>, vins &amp; planches de produits locaux. Au comptoir ou à emporter — on vous guide.</p>
+    </div>
     <h2 class="st-title">
-      <span class="t-line"><i>On goûte, on discute,</i></span>
+      <span class="t-line"><i>On goûte,</i></span>
+      <span class="t-line"><i>on discute,</i></span>
       <span class="t-line"><i>on repart <span class="tchalk">éclairé</span>.</i></span>
     </h2>
-    <div class="st-foot"><span class="rule"></span><span>Nantes · rue de l'Échelle · depuis 2020</span><span class="rule"></span></div>
+    <div class="st-foot"><span class="rule"></span><span>Nantes · rue de l'Échelle · depuis 2020</span></div>
   </div>
 </section>
 
@@ -691,7 +760,10 @@ footer{background:var(--noir);color:var(--craie-soft)}
 <section class="carte" id="carte">
   <div class="wrap reveal">
     <span class="eyebrow">L'ardoise</span>
-    <h2 class="title"><span class="t-line"><i>Les pressions.</i></span></h2>
+    <div class="carte-head">
+      <h2 class="title"><span class="t-line"><i>Les pressions.</i></span></h2>
+      <span class="cnum">5 becs — ça tourne chaque semaine</span>
+    </div>
     <div class="beer-grid">
       <div class="slate-list">
         <div class="brow"><div class="bn"><span class="bdot" style="background:#D9A441"></span><span class="btxt">La Nantaise IPP <span class="bdeg">6,5°</span><small>Mélusine · IPA</small></span></div><span class="lead-dots" aria-hidden="true"></span><div class="bp">3,80 / 6,80 €<span>demi / pinte</span></div></div>
@@ -711,6 +783,10 @@ footer{background:var(--noir);color:var(--craie-soft)}
         </div>
       </div>
     </div>
+    <a href="tel:+33982204487" class="btn-line" style="margin-top:38px">
+      <span class="bl-txt">Les pressions du jour ? Appelez le comptoir</span>
+      <span class="bl-cell"><span class="ar">→</span></span>
+    </a>
     <p class="carte-note">Prix relevés sur les ardoises de la devanture · degrés indicatifs. <b>TODO client :</b> confirmer la carte des pressions du moment et les degrés (elle tourne selon les brasseurs).</p>
   </div>
 </section>
@@ -718,14 +794,33 @@ footer{background:var(--noir);color:var(--craie-soft)}
 <!-- ============ BRASSEURS ============ -->
 <section class="brass" id="brasseurs">
   <div class="wrap reveal">
-    <span class="eyebrow">Ils coulent au comptoir</span>
-    <h2 class="title"><span class="t-line"><i>Les brasseurs locaux.</i></span></h2>
+    <div class="brass-head">
+      <div>
+        <span class="eyebrow">Ils coulent au comptoir</span>
+        <h2 class="title"><span class="t-line"><i>Les brasseurs locaux.</i></span></h2>
+      </div>
+      <p class="bh-note">9 microbrasseries de Loire-Atlantique, en pression ou en cave.</p>
+    </div>
   </div>
   <div class="brass-track" aria-hidden="true">
     <span>100 P'</span><span>Mélusine</span><span>Nao</span><span>Papas Brasseurs</span><span>Aerofab</span><span>Baribale</span><span>Duck</span><span>Olifant</span><span>Nautile</span>
     <span>100 P'</span><span>Mélusine</span><span>Nao</span><span>Papas Brasseurs</span><span>Aerofab</span><span>Baribale</span><span>Duck</span><span>Olifant</span><span>Nautile</span>
   </div>
+  <div class="brass-track rev" aria-hidden="true">
+    <span>Nautile</span><span>Olifant</span><span>Duck</span><span>Baribale</span><span>Aerofab</span><span>Papas Brasseurs</span><span>Nao</span><span>Mélusine</span><span>100 P'</span>
+    <span>Nautile</span><span>Olifant</span><span>Duck</span><span>Baribale</span><span>Aerofab</span><span>Papas Brasseurs</span><span>Nao</span><span>Mélusine</span><span>100 P'</span>
+  </div>
 </section>
+
+<!-- ============ TAPE DIAGONALE ============ -->
+<div class="tape-diag" aria-hidden="true">
+  <div class="tape-inner">
+    <div class="marq-track">
+      <span>Le 100 P'</span><span>bières locales éclairées</span><span>Le 100 P'</span><span>bières locales éclairées</span><span>Le 100 P'</span><span>bières locales éclairées</span>
+      <span>Le 100 P'</span><span>bières locales éclairées</span><span>Le 100 P'</span><span>bières locales éclairées</span><span>Le 100 P'</span><span>bières locales éclairées</span>
+    </div>
+  </div>
+</div>
 
 <!-- ============ POLAROIDS ============ -->
 <section class="polas">
@@ -805,11 +900,13 @@ footer{background:var(--noir);color:var(--craie-soft)}
 <footer>
   <div class="foot-cta">
     <div class="wrap foot-cta-in reveal">
-      <div>
-        <p class="chalk">Soif de découvertes ?</p>
-        <h3><span class="t-line"><i>On vous attend</i></span><span class="t-line"><i>rue de l'Échelle.</i></span></h3>
-      </div>
-      <a href="tel:+33982204487" class="btn btn-amber"><span>Appeler · 09 82 20 44 87</span><span class="ar">→</span></a>
+      <p class="chalk">Soif de découvertes ?</p>
+      <h3><span class="t-line"><i>On vous attend</i></span><span class="t-line"><i>rue de l'Échelle.</i></span></h3>
+      <p class="fc-tags"><span>#BièresArtisanales</span><span>#100%Locales</span><span>#HoppyDays</span><span>#Nantes</span></p>
+      <a href="tel:+33982204487" class="btn-line btn-line--dark">
+        <span class="bl-txt">Appeler le comptoir · 09 82 20 44 87</span>
+        <span class="bl-cell"><span class="ar">→</span></span>
+      </a>
     </div>
   </div>
 
