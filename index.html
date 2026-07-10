@@ -74,6 +74,8 @@
   --f-text:'Archivo', system-ui, sans-serif;
   --f-chalk:'Caveat', cursive;
   --maxw:1180px;
+  --ease:cubic-bezier(.77,0,.175,1);      /* quart in-out — reveals masqués */
+  --ease-out:cubic-bezier(.16,1,.3,1);    /* expo out — fades & hovers */
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
@@ -85,7 +87,14 @@ img{max-width:100%;display:block}
 .wrap{max-width:var(--maxw);margin:0 auto;padding:0 26px}
 .eyebrow{font-weight:700;text-transform:uppercase;letter-spacing:.28em;font-size:11.5px;color:var(--ambre)}
 .chalk{font-family:var(--f-chalk);font-weight:700}
-h2.title{font-family:var(--f-display);font-weight:900;font-size:clamp(32px,5vw,58px);line-height:1.02;letter-spacing:-.015em;margin:.2em 0 .55em}
+h2.title{font-family:var(--f-display);font-weight:900;font-size:clamp(34px,5.4vw,64px);line-height:1.02;letter-spacing:-.015em;margin:.2em 0 .55em}
+
+/* ---------- REVEAL MASQUÉ (lignes de titres) ---------- */
+.t-line{display:block;overflow:hidden;padding-bottom:.06em;margin-bottom:-.06em}
+.t-line i{display:block;font-style:normal;transform:translateY(112%);transition:transform 1s var(--ease)}
+.reveal.in .t-line i,.t-in .t-line i{transform:translateY(0)}
+.t-line:nth-child(2) i{transition-delay:.09s}
+.t-line:nth-child(3) i{transition-delay:.18s}
 
 /* ---------- NAV ---------- */
 header.nav{position:sticky;top:0;z-index:60;background:rgba(242,237,225,.72);backdrop-filter:blur(10px);border-bottom:1px solid transparent;transition:background .3s ease,border-color .3s ease,box-shadow .3s ease}
@@ -97,8 +106,8 @@ header.nav.scrolled .nav-in{height:62px}
 .brand .medal{width:42px;height:42px;border-radius:50%;background:var(--slate);display:grid;place-items:center;overflow:hidden;border:1.5px solid var(--noir)}
 .brand .medal img{width:100%;height:100%;object-fit:cover}
 .brand b{font-family:var(--f-display);font-weight:900;font-size:22px;letter-spacing:-.01em}
-.nav-links{display:flex;gap:30px;align-items:center}
-.nav-links a{font-weight:500;font-size:15px;position:relative;padding:4px 0}
+.nav-links{display:flex;gap:34px;align-items:center}
+.nav-links a{font-weight:600;font-size:12.5px;text-transform:uppercase;letter-spacing:.14em;position:relative;padding:4px 0}
 .nav-links a::after{content:"";position:absolute;left:0;bottom:0;width:0;height:2px;background:var(--ambre);transition:width .28s ease}
 .nav-links a:hover::after,.nav-links a.active::after{width:100%}
 .nav-cta{background:var(--slate);color:var(--craie)!important;padding:11px 20px;border-radius:4px;font-weight:600;font-size:14px;transition:.2s}
@@ -134,11 +143,18 @@ header.nav.scrolled .nav-in{height:62px}
 .hero-sub{max-width:44ch;color:var(--craie-soft);font-size:16.5px;opacity:0;animation:fadeUp .8s ease 1.62s forwards}
 .hero-cta{display:flex;gap:14px;flex-wrap:wrap;margin-top:28px;opacity:0;animation:fadeUp .8s ease 1.74s forwards}
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-.btn{padding:14px 26px;border-radius:5px;font-weight:600;font-size:15px;cursor:pointer;border:0;transition:transform .2s ease,background .2s ease}
+.btn{position:relative;display:inline-flex;align-items:center;gap:10px;padding:15px 28px;border-radius:5px;font-weight:600;font-size:15px;cursor:pointer;border:0;overflow:hidden;transition:color .35s var(--ease-out),border-color .35s var(--ease-out)}
+.btn::before{content:"";position:absolute;inset:0;background:var(--noir);transform:translateY(101%);transition:transform .45s var(--ease);z-index:0}
+.btn>*{position:relative;z-index:1}
+.btn .ar{display:inline-block;transition:transform .35s var(--ease-out);font-weight:400}
+.btn:hover .ar{transform:translateX(5px)}
 .btn-amber{background:var(--ambre);color:var(--noir)}
-.btn-amber:hover{background:var(--ambre-light);transform:translateY(-3px)}
+.btn-amber:hover{color:var(--craie)}
+.btn-amber:hover::before{transform:translateY(0)}
 .btn-out{background:transparent;color:var(--craie);border:1.5px solid var(--craie-soft)}
-.btn-out:hover{background:var(--craie);color:var(--noir)}
+.btn-out::before{background:var(--craie)}
+.btn-out:hover{color:var(--noir);border-color:var(--craie)}
+.btn-out:hover::before{transform:translateY(0)}
 @keyframes sealspin{to{transform:rotate(360deg)}}
 .hero-meta{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:32px;font-family:var(--f-chalk);font-weight:500;font-size:20px;color:var(--craie-soft);opacity:0;animation:fadeUp .8s ease 1.88s forwards}
 .hero-meta .sep{color:var(--ambre);font-size:11px;font-family:var(--f-text)}
@@ -146,8 +162,7 @@ header.nav.scrolled .nav-in{height:62px}
 .hero-pint{position:relative;justify-self:center;width:min(100%,420px)}
 .pint-frame{position:relative;clip-path:url(#pintClip);filter:drop-shadow(0 40px 60px rgba(0,0,0,.55));
   opacity:0;transform:translateY(28px);animation:fadeUp 1.1s cubic-bezier(.16,1,.3,1) .55s forwards}
-.pint-frame img{width:100%;height:min(64vh,560px);object-fit:cover;filter:saturate(.92) contrast(1.04);transform:scale(1.02);transition:transform .9s cubic-bezier(.16,1,.3,1)}
-.hero-pint:hover .pint-frame img{transform:scale(1.06)}
+.pint-frame img{width:100%;height:min(64vh,560px);object-fit:cover;filter:saturate(.92) contrast(1.04)}
 .pint-echo{position:absolute;inset:-16px -14px -18px;width:calc(100% + 28px);height:calc(100% + 34px);pointer-events:none;
   opacity:0;animation:fadeUp 1s ease .85s forwards}
 .pint-echo path{fill:none;stroke:rgba(224,168,92,.45);stroke-width:1.5;stroke-dasharray:6 7;stroke-linecap:round;vector-effect:non-scaling-stroke}
@@ -167,12 +182,34 @@ header.nav.scrolled .nav-in{height:62px}
 .marq{background:var(--ambre);color:var(--noir);overflow:hidden;border-top:1px solid var(--noir);border-bottom:1px solid var(--noir)}
 .marq-track{display:flex;white-space:nowrap;animation:slide 30s linear infinite;will-change:transform}
 .marq:hover .marq-track,.brass:hover .brass-track{animation-play-state:paused}
-.marq-track span{font-family:var(--f-display);font-weight:900;font-size:26px;padding:14px 28px;display:inline-flex;align-items:center;gap:28px;letter-spacing:-.01em}
-.marq-track span::after{content:"✶";font-size:15px}
+.marq-track span{font-family:var(--f-display);font-weight:900;font-size:30px;padding:16px 30px;display:inline-flex;align-items:center;gap:30px;letter-spacing:-.01em}
+.marq-track span:nth-child(even){color:transparent;-webkit-text-stroke:1.2px var(--noir)}
+.marq-track span::after{content:"✶";font-size:15px;color:var(--noir);-webkit-text-stroke:0}
 @keyframes slide{to{transform:translateX(-50%)}}
 
+/* ---------- STATEMENT (baseline géante) ---------- */
+.statement{background:var(--craie);padding:130px 0 118px;position:relative;overflow:hidden}
+.statement .eyebrow{display:block;text-align:center;margin-bottom:26px}
+.st-title{font-family:var(--f-display);font-weight:900;font-size:clamp(40px,8.2vw,118px);line-height:1;letter-spacing:-.03em;text-align:center;color:var(--noir)}
+.st-title .tchalk{font-family:var(--f-chalk);font-weight:700;color:var(--ambre);font-size:1.08em;letter-spacing:0}
+.st-title em{font-style:italic;font-weight:500}
+.st-foot{display:flex;align-items:center;justify-content:center;gap:18px;margin-top:44px;opacity:0;transform:translateY(14px);transition:opacity .8s var(--ease-out) .5s,transform .8s var(--ease-out) .5s}
+.reveal.in .st-foot{opacity:1;transform:none}
+.st-foot .rule{width:64px;height:1.5px;background:rgba(22,21,15,.3)}
+.st-foot span{font-size:12px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:#8a8578}
+
+/* ---------- BANDE PHOTO (parallax translation) ---------- */
+.band{position:relative;height:clamp(380px,68vh,640px);overflow:hidden;background:var(--slate)}
+.band-img{position:absolute;inset:-18% 0;will-change:transform}
+.band-img img{width:100%;height:100%;object-fit:cover;filter:saturate(.9) contrast(1.05) brightness(.82)}
+.band::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(22,21,15,.35),transparent 30%,transparent 62%,rgba(22,21,15,.55));pointer-events:none}
+.band-inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;z-index:1;text-align:center;padding:0 26px;background:radial-gradient(ellipse 58% 52% at center,rgba(22,21,15,.5),transparent 72%)}
+.band-inner .chalk{font-size:clamp(30px,4.6vw,54px);color:var(--craie);text-shadow:0 6px 30px rgba(0,0,0,.5);line-height:1.15}
+.band-inner .chalk .st{color:var(--ambre-light)}
+.band-inner small{font-size:11.5px;font-weight:700;letter-spacing:.26em;text-transform:uppercase;color:var(--craie-soft)}
+
 /* ---------- CONCEPT / PILIERS ---------- */
-.concept{padding:96px 0;background:var(--craie);position:relative;overflow:hidden}
+.concept{padding:120px 0 110px;background:var(--craie);position:relative;overflow:hidden}
 .concept .wrap{position:relative;z-index:1}
 .concept-stamp{position:absolute;left:-26px;bottom:44px;width:206px;height:206px;color:rgba(22,21,15,.12);transform:rotate(-12deg);pointer-events:none;z-index:0}
 .concept-stamp .cstamp-arc{font-family:var(--f-text);font-size:7px;font-weight:700;letter-spacing:1.5px;fill:currentColor}
@@ -254,7 +291,7 @@ header.nav.scrolled .nav-in{height:62px}
 .pil-note::before{content:"↖";font-family:var(--f-text);font-size:17px;font-weight:700}
 
 /* ---------- CARTE (ardoise) — signature ---------- */
-.carte{background:var(--slate);color:var(--craie);padding:80px 0 23px;position:relative}
+.carte{background:var(--slate);color:var(--craie);padding:110px 0 30px;position:relative}
 .carte::before{content:"";position:absolute;inset:0;opacity:.05;background-image:radial-gradient(rgba(242,237,225,.6) 1px,transparent 1px);background-size:5px 5px;pointer-events:none}
 .carte .wrap{position:relative}
 .carte h2.title{color:var(--craie)}
@@ -296,7 +333,7 @@ header.nav.scrolled .nav-in{height:62px}
 .brass-track span::after{content:"•";color:var(--ambre);font-size:14px}
 
 /* ---------- AVIS ---------- */
-.avis{padding:82px 0}
+.avis{padding:108px 0 82px}
 .avis-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:14px}
 .qcard{background:#fff;border:1px solid rgba(22,21,15,.14);border-radius:12px;padding:24px;box-shadow:0 12px 26px -22px rgba(0,0,0,.6);transition:transform .3s ease,box-shadow .3s ease}
 .qcard:hover{transform:translateY(-5px);box-shadow:0 20px 34px -20px rgba(0,0,0,.55)}
@@ -344,11 +381,12 @@ header.nav.scrolled .nav-in{height:62px}
 /* ---------- FOOTER ---------- */
 footer{background:var(--noir);color:var(--craie-soft)}
 .foot-cta{background:var(--craie);color:var(--noir)}
-.foot-cta-in{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:14px 26px 46px;flex-wrap:wrap}
-.foot-cta .chalk{font-size:26px;line-height:1;color:var(--ambre)}
-.foot-cta h3{font-family:var(--f-display);font-weight:900;font-size:clamp(24px,3.4vw,34px);letter-spacing:-.015em;line-height:1.05;margin-top:2px;color:var(--noir)}
+.foot-cta-in{display:flex;align-items:flex-end;justify-content:space-between;gap:28px;padding:64px 26px 84px;flex-wrap:wrap}
+.foot-cta .chalk{font-size:clamp(24px,2.6vw,32px);line-height:1;color:var(--ambre)}
+.foot-cta h3{font-family:var(--f-display);font-weight:900;font-size:clamp(32px,5.6vw,72px);letter-spacing:-.025em;line-height:1;margin-top:8px;color:var(--noir)}
 .foot-cta .btn-amber{background:var(--noir);color:var(--craie)}
-.foot-cta .btn-amber:hover{background:var(--ambre);color:var(--noir)}
+.foot-cta .btn-amber::before{background:var(--ambre)}
+.foot-cta .btn-amber:hover{color:var(--noir)}
 .foot-body{position:relative;overflow:hidden;padding:60px 0 26px}
 .foot-ghost{position:absolute;right:-10px;bottom:-42px;font-family:var(--f-display);font-weight:900;font-size:clamp(120px,20vw,240px);line-height:.8;color:var(--craie);opacity:.04;pointer-events:none;letter-spacing:-.03em}
 .foot-cols{position:relative;display:grid;grid-template-columns:1.6fr 1fr 1fr 1.1fr;gap:34px}
@@ -384,7 +422,7 @@ footer{background:var(--noir);color:var(--craie-soft)}
 .bdeg{font-family:var(--f-text);font-size:10.5px;font-weight:700;letter-spacing:.05em;color:var(--noir);background:var(--ambre-light);padding:2px 8px;border-radius:20px;margin-left:10px;white-space:nowrap}
 
 /* ---------- POLAROIDS ---------- */
-.polas{background:var(--kraft);padding:74px 0;overflow:hidden;position:relative}
+.polas{background:var(--kraft);padding:96px 0;overflow:hidden;position:relative}
 .polas .eyebrow{color:#7a5a24}
 .polas h2.title{color:var(--noir)}
 .polas .string{position:relative;margin-top:34px;padding:14px 0}
@@ -416,7 +454,7 @@ footer{background:var(--noir);color:var(--craie-soft)}
 @media (max-width:768px){
   .nav-links{position:fixed;inset:70px 0 auto 0;flex-direction:column;gap:0;background:var(--craie);padding:8px 26px 22px;transform:translateY(-140%);transition:transform .35s ease;box-shadow:0 20px 30px -20px rgba(0,0,0,.4);border-bottom:1px solid rgba(22,21,15,.14)}
   .nav-links.open{transform:translateY(0)}
-  .nav-links a{padding:14px 0;border-bottom:1px solid rgba(22,21,15,.08);width:100%;font-size:17px}
+  .nav-links a{padding:14px 0;border-bottom:1px solid rgba(22,21,15,.08);width:100%;font-size:13px}
   .nav-cta{text-align:center;margin-top:10px}
   .burger{display:flex}
   .burger.x span:nth-child(1){transform:translateY(7.5px) rotate(45deg)}
@@ -436,9 +474,17 @@ footer{background:var(--noir);color:var(--craie-soft)}
   .pint-frame img{height:min(52vh,420px)}
   .hero-seal{width:86px;height:86px;top:16px;right:-18px}
   .hero-pint .tag{font-size:18px;left:-8px;bottom:40px}
-  .btn{padding:12px 18px;font-size:14px;flex:1;text-align:center;min-width:140px}
+  .btn{padding:13px 18px;font-size:14px;justify-content:center;text-align:center;white-space:nowrap}
+  .hero-cta .btn{flex:1 1 100%}
 
   .marq-track span{font-size:20px;padding:11px 18px;gap:18px}
+  .statement{padding:80px 0 70px}
+  .st-title{font-size:clamp(34px,10.5vw,54px)}
+  .st-foot{margin-top:28px;gap:12px}
+  .st-foot .rule{width:34px}
+  .st-foot span{font-size:10px;letter-spacing:.18em}
+  .band{height:340px}
+  .band-inner .chalk{font-size:26px}
   .concept{padding:60px 0}
   .maison-grid{grid-template-columns:1fr;gap:44px;margin:36px 0 52px}
   .maison-photos{padding:10px 6px 34px 6px}
@@ -446,6 +492,13 @@ footer{background:var(--noir);color:var(--craie-soft)}
   .stats{gap:0 18px}
   .ci-badge{width:80px;height:80px;font-size:19px;top:-16px;right:-6px}
   .pil-grid,.beer-grid,.info-grid,.avis-grid{grid-template-columns:1fr}
+  .slate-list{padding:4px 12px}
+  .brow{padding:14px 4px}
+  .brow .bn{gap:10px;font-size:18px}
+  .bdeg{font-size:9.5px;padding:2px 6px;margin-left:7px}
+  .brow .lead-dots{min-width:12px;margin:0 8px}
+  .brow .bp{font-size:13.5px}
+  .fcol .fh{font-size:13px}
   .concept{padding:56px 0}
   .concept-stamp{width:130px;height:130px;bottom:auto;top:8px;left:auto;right:-20px}
   .brass-track span{font-size:18px;padding:4px 14px;gap:14px}
@@ -455,7 +508,7 @@ footer{background:var(--noir);color:var(--craie-soft)}
   .grev{flex-direction:column;align-items:flex-start;gap:12px}
   .grev .gbtn{margin-left:0}
   .pola{width:150px}
-  .foot-cta-in{flex-direction:column;align-items:flex-start;padding:30px 26px}
+  .foot-cta-in{flex-direction:column;align-items:flex-start;padding:44px 26px 54px;gap:22px}
   .foot-cols{grid-template-columns:1fr 1fr;gap:28px}
   .fcol-brand{grid-column:1/-1}
   .foot-ghost{font-size:120px;bottom:-24px}
@@ -465,12 +518,12 @@ footer{background:var(--noir);color:var(--craie-soft)}
 /* ================= REDUCED MOTION ================= */
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
-  .hero-eyebrow,.wordmark .line i,.hero-chalk,.hero-sub,.hero-cta,.hero-meta,.pint-frame,.pint-echo,.hero-seal,.hero-pint .tag,.scroll-cue{opacity:1!important;transform:none!important}
+  .hero-eyebrow,.wordmark .line i,.hero-chalk,.hero-sub,.hero-cta,.hero-meta,.pint-frame,.pint-echo,.hero-seal,.hero-pint .tag,.scroll-cue,.t-line i,.st-foot,.band-img{opacity:1!important;transform:none!important}
   .scroll-cue{transform:translateX(-50%)!important}
   .marq-track,.brass-track{animation:none!important}
 }
 </style>
-<noscript><style>.reveal,.reveal .brow,.reveal .pil,.reveal .qcard,.reveal .stat{opacity:1!important;transform:none!important}.title-rule{width:72px!important}</style></noscript>
+<noscript><style>.reveal,.reveal .brow,.reveal .pil,.reveal .qcard,.reveal .stat,.st-foot{opacity:1!important;transform:none!important}.t-line i{transform:none!important}.title-rule{width:72px!important}</style></noscript>
 </head>
 <body id="top">
 
@@ -505,8 +558,8 @@ footer{background:var(--noir);color:var(--craie-soft)}
       <p class="hero-chalk"><span class="st">★★</span> à déguster sur place ou à emporter</p>
       <p class="hero-sub">Bar & cave à bières artisanales et locales, rue de l'Échelle à Nantes. Microbrasseries de Loire-Atlantique, vins & produits locaux à grignoter. La qualité, pas la quantité.</p>
       <div class="hero-cta">
-        <a href="#carte" class="btn btn-amber">La carte des bières</a>
-        <a href="#infos" class="btn btn-out">Nous trouver</a>
+        <a href="#carte" class="btn btn-amber"><span>La carte des bières</span><span class="ar">→</span></a>
+        <a href="#infos" class="btn btn-out"><span>Nous trouver</span></a>
       </div>
       <p class="hero-meta"><span>Depuis 2020</span><span class="sep">✶</span><span>Place Royale</span><span class="sep">✶</span><span>Hoppy Days mardi &amp; mercredi</span></p>
     </div>
@@ -545,6 +598,18 @@ footer{background:var(--noir);color:var(--craie-soft)}
   </div>
 </div>
 
+<!-- ============ STATEMENT ============ -->
+<section class="statement">
+  <div class="wrap reveal">
+    <span class="eyebrow">Le club des amateurs</span>
+    <h2 class="st-title">
+      <span class="t-line"><i>On goûte, on discute,</i></span>
+      <span class="t-line"><i>on repart <span class="tchalk">éclairé</span>.</i></span>
+    </h2>
+    <div class="st-foot"><span class="rule"></span><span>Nantes · rue de l'Échelle · depuis 2020</span><span class="rule"></span></div>
+  </div>
+</section>
+
 <!-- ============ CONCEPT ============ -->
 <section class="concept">
   <svg class="concept-stamp" viewBox="0 0 120 120" aria-hidden="true">
@@ -557,7 +622,7 @@ footer{background:var(--noir);color:var(--craie-soft)}
   <div class="wrap reveal">
     <div class="maison-head">
       <span class="eyebrow">La maison</span>
-      <h2 class="title">Le repaire des<br>amateurs <span class="tchalk">éclairés</span>.</h2>
+      <h2 class="title"><span class="t-line"><i>Le repaire des</i></span><span class="t-line"><i>amateurs <span class="tchalk">éclairés</span>.</i></span></h2>
       <span class="title-rule"></span>
     </div>
     <div class="maison-grid">
@@ -613,11 +678,20 @@ footer{background:var(--noir);color:var(--craie-soft)}
   </div>
 </section>
 
+<!-- ============ BANDE PHOTO ============ -->
+<section class="band" aria-label="L'ambiance au comptoir">
+  <div class="band-img"><img src="assets/images/bar.jpg" loading="lazy" decoding="async" alt=""></div>
+  <div class="band-inner">
+    <p class="chalk"><span class="st">«</span> La qualité, pas la quantité. <span class="st">»</span></p>
+    <small>La devise de la maison</small>
+  </div>
+</section>
+
 <!-- ============ CARTE — ardoise ============ -->
 <section class="carte" id="carte">
   <div class="wrap reveal">
     <span class="eyebrow">L'ardoise</span>
-    <h2 class="title">Les pressions.</h2>
+    <h2 class="title"><span class="t-line"><i>Les pressions.</i></span></h2>
     <div class="beer-grid">
       <div class="slate-list">
         <div class="brow"><div class="bn"><span class="bdot" style="background:#D9A441"></span><span class="btxt">La Nantaise IPP <span class="bdeg">6,5°</span><small>Mélusine · IPA</small></span></div><span class="lead-dots" aria-hidden="true"></span><div class="bp">3,80 / 6,80 €<span>demi / pinte</span></div></div>
@@ -645,7 +719,7 @@ footer{background:var(--noir);color:var(--craie-soft)}
 <section class="brass" id="brasseurs">
   <div class="wrap reveal">
     <span class="eyebrow">Ils coulent au comptoir</span>
-    <h2 class="title">Les brasseurs locaux.</h2>
+    <h2 class="title"><span class="t-line"><i>Les brasseurs locaux.</i></span></h2>
   </div>
   <div class="brass-track" aria-hidden="true">
     <span>100 P'</span><span>Mélusine</span><span>Nao</span><span>Papas Brasseurs</span><span>Aerofab</span><span>Baribale</span><span>Duck</span><span>Olifant</span><span>Nautile</span>
@@ -657,7 +731,7 @@ footer{background:var(--noir);color:var(--craie-soft)}
 <section class="polas">
   <div class="wrap reveal">
     <span class="eyebrow">La guirlande du comptoir</span>
-    <h2 class="title">L'ambiance en polaroïds.</h2>
+    <h2 class="title"><span class="t-line"><i>L'ambiance en polaroïds.</i></span></h2>
     <div class="string">
       <div class="pola-row">
         <figure class="pola"><img src="assets/images/bar.jpg" loading="lazy" decoding="async" alt="Le comptoir et les tireuses du 100 P'"><figcaption class="cap">au comptoir</figcaption></figure>
@@ -674,7 +748,7 @@ footer{background:var(--noir);color:var(--craie-soft)}
 <section class="avis" id="avis">
   <div class="wrap reveal">
     <span class="eyebrow">Le carnet du club</span>
-    <h2 class="title">Ce qu'on dit au comptoir.</h2>
+    <h2 class="title"><span class="t-line"><i>Ce qu'on dit au comptoir.</i></span></h2>
     <div class="grev">
       <span class="glogo"><span class="b">G</span><span class="r">o</span><span class="y">o</span><span class="b">g</span><span class="g">l</span><span class="r">e</span></span>
       <div class="gnote"><span class="num">4,8</span><span><span class="st">★★★★★</span><br><span class="cnt">286 avis · Nantes</span></span></div>
@@ -694,14 +768,14 @@ footer{background:var(--noir);color:var(--craie-soft)}
   <div class="wrap info-grid reveal">
     <div class="info-card">
       <span class="eyebrow">Comment venir</span>
-      <h2 class="title">Nous trouver</h2>
+      <h2 class="title"><span class="t-line"><i>Nous trouver</i></span></h2>
       <div class="iline"><span class="k">🚋</span><span>En plein centre, à <b>2 min de la Place Royale</b>. Tram & bus arrêt Commerce, puis quelques pas à pied.</span></div>
       <div class="iline"><span class="k">☀️</span><span>Terrasse aux beaux jours, sur la rue piétonne de l'Échelle.</span></div>
       <div class="iline"><span class="k">🍺</span><span><b>Hoppy Days</b> mardi & mercredi — une pinte avant 21 h = un demi offert.</span></div>
       <p class="warn">Adresse, téléphone & horaires complets : voir le pied de page ↓</p>
       <div class="info-cta">
-        <a href="tel:+33982204487" class="btn btn-amber">Appeler</a>
-        <a href="https://www.google.com/maps/dir/?api=1&destination=3+rue+de+l'Echelle+44000+Nantes" target="_blank" rel="noopener" class="btn btn-out">Itinéraire</a>
+        <a href="tel:+33982204487" class="btn btn-amber"><span>Appeler</span></a>
+        <a href="https://www.google.com/maps/dir/?api=1&destination=3+rue+de+l'Echelle+44000+Nantes" target="_blank" rel="noopener" class="btn btn-out"><span>Itinéraire</span><span class="ar">→</span></a>
       </div>
     </div>
     <div class="map-wrap">
@@ -715,7 +789,7 @@ footer{background:var(--noir);color:var(--craie-soft)}
 <section class="faq">
   <div class="wrap reveal">
     <span class="eyebrow" style="display:block;text-align:center">Bon à savoir</span>
-    <h2 class="title">Questions fréquentes</h2>
+    <h2 class="title"><span class="t-line"><i>Questions fréquentes</i></span></h2>
     <div class="faq-list">
       <details open><summary>Où boire une bière artisanale à Nantes ?</summary><p>Au 100 P', 3 rue de l'Échelle, à deux pas de la Place Royale. Un bar & cave dédié aux microbrasseries locales de Loire-Atlantique, à déguster sur place ou à emporter.</p></details>
       <details><summary>Peut-on emporter les bières ?</summary><p>Oui. Le 100 P' est aussi une cave : canettes, bouteilles et vins locaux à emporter, en plus des pressions servies au comptoir.</p></details>
@@ -730,12 +804,12 @@ footer{background:var(--noir);color:var(--craie-soft)}
 <!-- ============ FOOTER ============ -->
 <footer>
   <div class="foot-cta">
-    <div class="wrap foot-cta-in">
+    <div class="wrap foot-cta-in reveal">
       <div>
         <p class="chalk">Soif de découvertes ?</p>
-        <h3>On vous attend rue de l'Échelle.</h3>
+        <h3><span class="t-line"><i>On vous attend</i></span><span class="t-line"><i>rue de l'Échelle.</i></span></h3>
       </div>
-      <a href="tel:+33982204487" class="btn btn-amber">Appeler · 09 82 20 44 87</a>
+      <a href="tel:+33982204487" class="btn btn-amber"><span>Appeler · 09 82 20 44 87</span><span class="ar">→</span></a>
     </div>
   </div>
 
@@ -815,6 +889,21 @@ if(reduce||!('IntersectionObserver' in window)){
     entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});
   },{threshold:.12,rootMargin:'0px 0px -8% 0px'});
   revs.forEach(function(el){io.observe(el);});
+}
+
+/* parallax bande photo — translation seule, jamais de zoom */
+var bandImg=document.querySelector('.band-img');
+if(bandImg && !reduce){
+  var bandSec=bandImg.parentElement,parTick=false;
+  function bandPar(){
+    parTick=false;
+    var r=bandSec.getBoundingClientRect();
+    if(r.bottom<0||r.top>window.innerHeight)return;
+    var p=(r.top+r.height/2-window.innerHeight/2)/(window.innerHeight/2+r.height/2);
+    bandImg.style.transform='translate3d(0,'+(p*-9).toFixed(2)+'%,0)';
+  }
+  window.addEventListener('scroll',function(){if(!parTick){parTick=true;requestAnimationFrame(bandPar);}},{passive:true});
+  bandPar();
 }
 </script>
 </body>
